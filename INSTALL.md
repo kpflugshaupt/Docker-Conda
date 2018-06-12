@@ -11,7 +11,7 @@ Clone or copy any existing work into the `/projects` folder.
     * Run `make build` to build the app  
     * If make is not installed on your machine, you can run each command mannualy with copy/paste from the Makefile to your shell. EG to build run `docker build -t pittvax/anaconda .`  
     * Note that running `build` in any form will overwrite your container. Be sure to generate an environment file as described below to rebuild your environment.  
-1. Run `make jupyter` to start Jupyter lab.  
+1. Run `make jupyter` to re-start Jupyter lab for a new session.  
     * This will not overwrite your container.  
 1. Open https://localhost:8888 to view Jupyter lab  
     * The password is "jupyter" (without the quotes)

@@ -7,3 +7,6 @@ projects/*
 
 # Ignore .gitattributes to prevent git from complaining about nbstripout filter 
 .gitattributes
+
+#Ignore user-settings dir
+user-settings/

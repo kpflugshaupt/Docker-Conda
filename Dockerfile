@@ -5,7 +5,9 @@ FROM continuumio/anaconda3:latest
 # Python packages from conda
 RUN conda install -c conda-forge -y \
     jupyterlab \
-    nbstripout
+    nbstripout \
+    nodejs 
+
 
 # Conda supports delegating to pip to install dependencies
 # that aren’t available in anaconda or need to be compiled
@@ -14,6 +16,7 @@ RUN conda install -c conda-forge -y \
 
 # Create a home for the mounted volume for Jupyter
 RUN /bin/bash -c "mkdir /opt/projects"
+RUN /bin/bash -c "mkdir /opt/user-settings"
 
 # Set the ENTRYPOINT to use bash
 # ENTRYPOINT [ “/bin/bash”, “-c” ]
@@ -26,7 +29,9 @@ ENV PROJECT_DIR=/opt/projects \
     SSL_CERT_PEM=/root/.jupyter/jupyter.pem \
     SSL_CERT_KEY=/root/.jupyter/jupyter.key \
     PW_HASH="u'sha1:31cb67870a35:1a2321318481f00b0efdf3d1f71af523d3ffc505'" \
-    CONFIG_PATH=/root/.jupyter/jupyter_notebook_config.py
+    CONFIG_PATH=/root/.jupyter/jupyter_notebook_config.py \
+    SHELL=/bin/bash \
+    JUPYTERLAB_SETTINGS_DIR=/opt/user-settings
 
 # Use the environment.yml to create the conda environment.
 # ADD environment.yml /tmp/environment.yml
