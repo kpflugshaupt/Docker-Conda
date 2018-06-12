@@ -57,6 +57,7 @@ ENV PROJECT_DIR=/opt/projects \
 ADD ./etc/docker_cmd.sh /
 # Execute dos to linux in case the script was molested by windows
 RUN sed -i -e 's/\r$//' /docker_cmd.sh
+RUN ["chmod", "+x", "docker_cmd.sh"]
 
 # Launch Jupyter lab
 WORKDIR ${PROJECT_DIR}

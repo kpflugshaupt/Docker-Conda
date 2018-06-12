@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 #
 # generate configuration, cert, and password if this is the first run
