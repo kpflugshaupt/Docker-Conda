@@ -1,0 +1,9 @@
+# Ignore notebook backups
+*.ipynb_checkpoints
+
+# Ignore everything except the README in the projects folder
+projects/*
+!/projects/README.md
+
+# Ignore .gitattributes to prevent git from complaining about nbstripout filter 
+.gitattributes
