@@ -45,7 +45,7 @@ prune :
 	@docker container prune
 
 shell :
-	docker run -i -t pittvax/anaconda /bin/bash
+	docker run -i -t --rm pittvax/anaconda /bin/bash
 
 conda :
 	docker run --rm pittvax/anaconda conda $(filter-out $@,$(MAKECMDGOALS))

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #
 # generate configuration, cert, and password if this is the first run
@@ -14,6 +14,8 @@ if [ ! -f /var/tmp/pvconda_init ] ; then
     touch /var/tmp/pvconda_init
 fi
 
+conda env create -f /opt/projects/environment.yml -n docker-conda && \
+source activate docker-conda && \
 jupyter lab --allow-root -y --no-browser --notebook-dir=${PROJECT_DIR} \
     --certfile=${SSL_CERT_PEM} --keyfile=${SSL_CERT_KEY} --ip='*' \
     --config=${CONFIG_PATH}
