@@ -39,6 +39,12 @@ Default environment.yml is provided. Overwrite with your customizations to relia
 
 ## Creating an environment file  
 Creating an environment file allows one to rebuild the container and install packages automatically.  
+From a shell in the container or from the Jupyter lab terminal, run  
+
+```bash  
+cd /opt/projects  
+conda env export > environment.yml  
+```
 
 ## Usage
 

@@ -1,5 +1,5 @@
 # Specify base image
-FROM continuumio/anaconda3:latest
+FROM continuumio/miniconda3:latest
 
 # Set the ENTRYPOINT to use bash
 # ENTRYPOINT [ “/bin/bash”, “-c” ]
@@ -34,9 +34,8 @@ ENV PROJECT_DIR=/opt/projects \
     JUPYTERLAB_SETTINGS_DIR=/opt/user-settings
 
 # Use the environment.yml to create the conda environment.
-
-# RUN /bin/bash -c "conda env create -n environment"
 ADD environment.yml /tmp/environment.yml
+RUN /bin/bash -c "conda env update -f /tmp/environment.yml"
 # WORKDIR /tmp
 # ENTRYPOINT [ “/bin/bash”, “-c” ]
 # RUN [ “conda”, “env”, “create” ]
