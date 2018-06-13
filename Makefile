@@ -33,7 +33,7 @@ build :
 jupyter :
 	docker run \
 	-it --rm  \
-	--name anaconda \
+	--name pv-conda \
 	--mount type=bind,source=${PWD}/projects,target=/opt/projects \
 	--mount type=bind,source=$(JUPYTER_SETTINGS),target=/opt/user-settings \
 	-p 8888:8888/tcp  pittvax/anaconda

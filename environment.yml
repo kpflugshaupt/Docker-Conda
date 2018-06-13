@@ -1,7 +1,7 @@
 # Specify package dependencies in this file
 # https://conda.io/docs/commands.html#conda-environment-commands
 # 
-name: docker-conda
+name: pv-conda
 channels:
   - conda-forge
   - defaults

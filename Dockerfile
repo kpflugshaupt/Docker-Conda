@@ -10,6 +10,7 @@ RUN conda install -c conda-forge -y \
     jupyterlab \
     nbstripout \
     nodejs \
+    ipykernel \
     nb_conda_kernels 
     
 # Conda supports delegating to pip to install dependencies
