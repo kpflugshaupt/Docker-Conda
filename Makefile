@@ -26,17 +26,22 @@ endif
 default: jupyter
 
 build :
-	@echo "Building Anaconda container..."
-	docker build -t pittvax/anaconda . 
+	@echo "Building container..."
+	docker build --rm -t pittvax/conda . 
 	@$(MAKE) -f $(THIS_FILE) jupyter
 
 jupyter :
-	docker run \
-	-it --rm  \
+	docker run -it \
 	--name pv-conda \
 	--mount type=bind,source=${PWD}/projects,target=/opt/projects \
 	--mount type=bind,source=$(JUPYTER_SETTINGS),target=/opt/user-settings \
-	-p 8888:8888/tcp  pittvax/anaconda
+	-p 8888:8888/tcp  pittvax/conda
+
+start :
+	docker start pv-conda
+
+stop :
+	docker stop pv-conda
 
 prune :
 	@docker ps -a

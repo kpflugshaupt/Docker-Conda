@@ -8,7 +8,7 @@ Default environment.yml is provided. Overwrite with your customizations to relia
 
 * [Docker](https://docs.docker.com/)
 * Some familiarity with the command line.  
-* Some familiarity with Jupyter lab/notebook.  
+* Some familiarity with [Jupyter lab/notebook](http://jupyterlab.readthedocs.io/en/stable/#).  
 * A little common sense.  
 
 ## Usage
@@ -21,13 +21,13 @@ Default environment.yml is provided. Overwrite with your customizations to relia
 
 ## Installation  
 
-1. Download or clone this repo to your local machine.
+1. Download or clone the forked repo to your local machine.
 1. Clone or copy any existing work into the `/projects` folder.  
-1. Install [docker](https://docs.docker.com/) if necessary  (pay attention to Docker requirements)
+1. Install [docker](https://docs.docker.com/), if necessary (pay attention to Docker requirements)
 1. `Makefile` provides useful commands in the format `make <command>`  
     * Open a shell in the root of this repo  
     * Run `make build` to build the app  
-    * If make is not installed on your machine, you can run each command mannualy with copy/paste from the Makefile to your shell. EG to build run `docker build -t pittvax/anaconda .`  
+    * If make is not installed on your machine, you can run each command mannualy with copy/paste from the Makefile to your shell. EG: to build the container run `docker build -t pittvax/anaconda .`  
     * Note that running `build` in any form will overwrite your container. Be sure to generate an environment file as described below to rebuild your environment.  
 1. Run `make jupyter` to re-start Jupyter lab for a new session.  
     * This will not overwrite your container.  

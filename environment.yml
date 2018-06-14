@@ -1,4 +1,9 @@
-# Specify package dependencies in this file
+# This is the default environment that is installed when the container
+# is built the first time. Copy to /projects and customize, or export a 
+# backup of your environment with 
+# conda env export > /opt/projects/environment.yml
+#
+# See also:
 # https://conda.io/docs/commands.html#conda-environment-commands
 # 
 name: base

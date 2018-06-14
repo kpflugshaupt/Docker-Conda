@@ -33,20 +33,10 @@ ENV PROJECT_DIR=/opt/projects \
     SHELL=/bin/bash \
     JUPYTERLAB_SETTINGS_DIR=/opt/user-settings
 
-# Use the environment.yml to create the conda environment.
-ADD environment.yml /tmp/environment.yml
-RUN /bin/bash -c "conda env update -f /tmp/environment.yml"
-# WORKDIR /tmp
-# ENTRYPOINT [ “/bin/bash”, “-c” ]
-# RUN [ “conda”, “env”, “create” ]
-
-# # We set ENTRYPOINT, so while we still use exec mode, we don’t
-# # explicitly call /bin/bash
-# CMD [ “source activate your-environment && exec python application.py” ]
-
 # Copy in the startup script
 WORKDIR /
 ADD ./etc/docker_cmd.sh /
+ADD ./environment.yml /tmp
 # Execute dos to linux in case the script was molested by windows
 RUN sed -i -e 's/\r$//' /docker_cmd.sh
 RUN /bin/bash -c "chmod +x /docker_cmd.sh"

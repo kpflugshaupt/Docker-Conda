@@ -11,6 +11,12 @@ if [ ! -f /var/tmp/pvconda_init ] ; then
             -keyout ${SSL_CERT_KEY} -out ${SSL_CERT_PEM}
     fi
     echo "c.NotebookApp.password = ${PW_HASH}" >> ${CONFIG_PATH}
+    # update base environment from user provided backup or use default
+    if [ -f '/opt/projects/environment.yml' ]; then 
+        conda env update -f /opt/projects/environment.yml
+    else
+        conda env update -f /tmp/environment.yml
+    fi
     touch /var/tmp/pvconda_init
 fi
 
