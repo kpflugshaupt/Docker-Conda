@@ -1,4 +1,4 @@
-# Docker-Anaconda
+# Docker-Conda
 
 Dockerized version of [Miniconda 3](https://hub.docker.com/r/continuumio/miniconda3/) for easy analyses.  
 Base environment is built from Miniconda and useful packages. Cusomize as necessary for your project.
@@ -56,13 +56,34 @@ You can execute commands in the container to perform tasks such as installing pa
     * Use the Jupyter lab terminal or  
     * Open a new local terminal and run `make shell` to open a shell in the container. Close this shell with `exit`.  
 
-### Creating an environment file  
+### Conda environments
+
+This script will build an image based on `continuumio/miniconda3:latest` and install:  
+
+* jupyterlab
+* ipykernel
+* nb_conda_kernels  
+* nbstripout
+* nodejs
+* matplotlib
+* pandas  
+* numpy  
+
+To add to this base configuration, edit `./etc/environment.yml` and new builds will use these specifications.
+
+If multiple project directories with individual `environment.yml` files exist in `./projects` an environment for each project will be created on build.
+
+#### Creating an environment file  
 
 Creating an environment file allows one to rebuild the container and install packages automatically.  
 From a shell in the container or from the Jupyter lab terminal, run  
 
 ```bash  
-conda env export > /opt/projects/environment.yml  
+# Substitute your environment's name for <myenvironment>
+source activate <myenvironment>
+
+# Substitute your project's directory for <myproject>
+conda env export > /opt/projects/<myproject>/>environment.yml  
 ```
 
-Your environment configuration will appear in the `./projects directory`. If present, this file will be used to build the container instead of the default configuration file. Therefore, you can share the repo and rebuild your exact environment to reproduce your analyses elsewhere. :-)
+Your environment configuration can be shared with your source code to rebuild your exact environment and reproduce your analyses elsewhere. :-)

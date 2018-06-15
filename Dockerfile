@@ -1,9 +1,6 @@
 # Specify base image
 FROM continuumio/miniconda3:latest
 
-# Set the ENTRYPOINT to use bash
-# ENTRYPOINT [ “/bin/bash”, “-c” ]
-
 # Install packages
 # Python packages from conda
 RUN conda install -c conda-forge -y \
@@ -11,6 +8,10 @@ RUN conda install -c conda-forge -y \
     nbstripout \
     nodejs \
     ipykernel \
+    matplotlib \
+    pandas \
+    numpy \
+    nb_conda \
     nb_conda_kernels 
     
 # Conda supports delegating to pip to install dependencies
@@ -43,6 +44,4 @@ RUN /bin/bash -c "chmod +x /docker_cmd.sh"
 
 # Launch Jupyter lab
 WORKDIR ${PROJECT_DIR}
-# CMD "conda create --name docker-conda && conda activate docker-conda"
 CMD  /docker_cmd.sh
-# RUN [ “/bin/bash”, “-c”, “source activate docker-conda” ]
