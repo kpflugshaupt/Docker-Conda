@@ -1,7 +1,7 @@
 # Docker-Anaconda
 
 Dockerized version of [Miniconda 3](https://hub.docker.com/r/continuumio/miniconda3/) for easy analyses.  
-Base environment is built from Miniconda and a few useful packages. Cusomize as necessary for your project.
+Base environment is built from Miniconda and useful packages. Cusomize as necessary for your project.
 Default environment.yml is provided. Overwrite with your customizations to reliably re-build the container.
 
 ## Prerequisites
@@ -26,29 +26,43 @@ Default environment.yml is provided. Overwrite with your customizations to relia
 1. Install [docker](https://docs.docker.com/), if necessary (pay attention to Docker requirements)
 1. `Makefile` provides useful commands in the format `make <command>`  
     * Open a shell in the root of this repo  
-    * Run `make build` to build the app  
-    * If make is not installed on your machine, you can run each command mannualy with copy/paste from the Makefile to your shell. EG: to build the container run `docker build -t pittvax/anaconda .`  
-    * Note that running `build` in any form will overwrite your container. Be sure to generate an environment file as described below to rebuild your environment.  
-1. Run `make jupyter` to re-start Jupyter lab for a new session.  
-    * This will not overwrite your container.  
-1. Open https://localhost:8888 to view Jupyter lab  
-    * The password is "jupyter" (without the quotes)
-    * The big scary warning from your browser about https is normal. You are creating a  self-signed key when you build the container. Self-signed keys make browsers mad. You can safely ignore the warning because you are in control of the Jupyter server and the client which are both on your localhost network. [Read more here.](http://jupyter-notebook.readthedocs.io/en/latest/public_server.html#using-ssl-for-encrypted-communication)
-1. To install packages in the container, use the Jupyter lab terminal or open a new local terminal and run `make shell` to open a shell in the container.
-1. Shut down the Jupyter server with `ctrl+c` or just close the shell that launched the server.  
+    * Run `make build` to build the app  -- Note that running `build` in any form will overwrite your container. Be sure to generate an environment file as described below to rebuild your environment.  
+    * If make is not installed on your machine, you can run each command mannualy with copy/paste from the Makefile to your shell. Be sure to pay attention to the variables and substitute manually. EG: to build the container run a command similar to the following:  
 
-## Creating an environment file  
-Creating an environment file allows one to rebuild the container and install packages automatically.  
-From a shell in the container or from the Jupyter lab terminal, run  
-
-```bash  
-cd /opt/projects  
-conda env export > environment.yml  
+```bash
+# "make build" is easier, but if you have to, use docker commands similar to this
+docker build --rm -t pittvax/conda .  && \
+docker run -it \
+--name pv-conda \
+--mount type=bind,source=${PWD}/projects,target=/opt/projects \
+--mount type=bind,source=~/.jupyter/lab/user-settings,target=/opt/user-settings \
+-p 8888:8888/tcp  pittvax/conda
 ```
 
 ## Usage
 
+1. Run `make start` to start or re-start the container for a new session.  
+    * This will start your container where you left off and will not overwrite your environment.  
+1. Open https://localhost:8888 to view Jupyter lab  
+    * The password is "jupyter" (without the quotes)
+    * The big scary warning from your browser about https is normal. You are creating a  self-signed key when you build the container. Self-signed keys make browsers mad. You can safely ignore the warning because you are in control of the Jupyter server and the client which are both on your localhost network. [Read more here.](http://jupyter-notebook.readthedocs.io/en/latest/public_server.html#using-ssl-for-encrypted-communication)
+1. Run `make stop` to stop the container at the end of your session.  
+1. When the project is complete, clean up with `make prune`. This will remove all leftover docker files.
 
+### Interacting with the container's shell  
 
-## Examples
-#TODO
+You can execute commands in the container to perform tasks such as installing packages or running scripts using two methods.  
+
+    * Use the Jupyter lab terminal or  
+    * Open a new local terminal and run `make shell` to open a shell in the container. Close this shell with `exit`.  
+
+### Creating an environment file  
+
+Creating an environment file allows one to rebuild the container and install packages automatically.  
+From a shell in the container or from the Jupyter lab terminal, run  
+
+```bash  
+conda env export > /opt/projects/environment.yml  
+```
+
+Your environment configuration will appear in the `./projects directory`. If present, this file will be used to build the container instead of the default configuration file. Therefore, you can share the repo and rebuild your exact environment to reproduce your analyses elsewhere. :-)

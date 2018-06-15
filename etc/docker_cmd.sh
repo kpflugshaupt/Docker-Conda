@@ -3,7 +3,7 @@
 #
 # generate configuration, cert, and password if this is the first run
 #
-if [ ! -f /var/tmp/pvconda_init ] ; then
+if [ ! -f /var/tmp/pv-conda_init ] ; then
     jupyter notebook --allow-root --generate-config
     if [ ! -f ${SSL_CERT_PEM} ] ; then
         openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
@@ -17,7 +17,7 @@ if [ ! -f /var/tmp/pvconda_init ] ; then
     else
         conda env update -f /tmp/environment.yml
     fi
-    touch /var/tmp/pvconda_init
+    touch /var/tmp/pv-conda_init
 fi
 
 jupyter lab --allow-root -y --no-browser --notebook-dir=${PROJECT_DIR} \

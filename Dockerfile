@@ -36,7 +36,7 @@ ENV PROJECT_DIR=/opt/projects \
 # Copy in the startup script
 WORKDIR /
 ADD ./etc/docker_cmd.sh /
-ADD ./environment.yml /tmp
+ADD ./etc/environment.yml /tmp
 # Execute dos to linux in case the script was molested by windows
 RUN sed -i -e 's/\r$//' /docker_cmd.sh
 RUN /bin/bash -c "chmod +x /docker_cmd.sh"

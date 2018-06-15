@@ -1,4 +1,4 @@
-.PHONY: test build jupyter prune shell conda
+.PHONY: test build jupyter start stop prune shell
 # Set shell to cmd on windows
 ifneq (,$(findstring WINDOWS,$(PATH)))
 SHELL := C:/Windows/System32/cmd.exe
@@ -50,9 +50,4 @@ prune :
 	@docker container prune
 
 shell :
-	docker run -i -t --rm pittvax/anaconda /bin/bash
-
-conda :
-	docker run --rm pittvax/anaconda conda $(filter-out $@,$(MAKECMDGOALS))
-% :
-	@:
+	docker exec -i -t pv-conda /bin/bash
