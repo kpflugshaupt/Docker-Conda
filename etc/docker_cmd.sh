@@ -32,7 +32,7 @@ if [ ! -f /var/tmp/pv-conda_init ] ; then
     echo "c.NotebookApp.password = ${PW_HASH}" >> ${CONFIG_PATH}
 
     # Update base environment with defaults
-    if [ -f '/tmp/environment.yml' ]; then 
+    if [ -f '/opt/base-environment.yml' ]; then 
         conda env update -f /tmp/environment.yml
     fi
 
@@ -40,8 +40,9 @@ if [ ! -f /var/tmp/pv-conda_init ] ; then
     for file in $(find /opt/projects -name 'environment.yml'); do
     eval $(parse_yaml $file)
     conda env create -f $file -n $name
+    # install environment kernel in jupyter
     source activate $name
-    conda install -c conda-forge ipykernel
+    conda install -c conda-forge -y ipykernel
     ipython kernel install --name=$name
     done
 

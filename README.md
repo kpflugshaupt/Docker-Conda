@@ -2,7 +2,6 @@
 
 Dockerized version of [Miniconda 3](https://hub.docker.com/r/continuumio/miniconda3/) for easy analyses.  
 Base environment is built from Miniconda and useful packages. Cusomize as necessary for your project.
-Default environment.yml is provided. Overwrite with your customizations to reliably re-build the container.
 
 ## Prerequisites
 
@@ -15,8 +14,8 @@ Default environment.yml is provided. Overwrite with your customizations to relia
 
 1. Fork or download this repository and rename for your project.  
 1. Follow install instructions to get your project started.  
-1. Install packages as required.  
-1. Export and overwrite `environment.yml` and commit to your fork.  
+1. Create environments and/or install packages as required.  
+1. Export `environment.yml` to your project's directory and commit to your fork.  
 1. Share your forked repo for reproducable analyses.
 
 ## Installation  
@@ -35,6 +34,7 @@ docker build --rm -t pittvax/conda .  && \
 docker run -it \
 --name pv-conda \
 --mount type=bind,source=${PWD}/projects,target=/opt/projects \
+--mount type=bind,source=${PWD}/etc,target=/opt/etc \
 --mount type=bind,source=~/.jupyter/lab/user-settings,target=/opt/user-settings \
 -p 8888:8888/tcp  pittvax/conda
 ```
@@ -51,10 +51,10 @@ docker run -it \
 
 ### Interacting with the container's shell  
 
-You can execute commands in the container to perform tasks such as installing packages or running scripts using two methods.  
+You can execute commands in the container to perform tasks such as installing packages or running scripts using two methods.
 
-    * Use the Jupyter lab terminal or  
-    * Open a new local terminal and run `make shell` to open a shell in the container. Close this shell with `exit`.  
+*  Use the Jupyter lab terminal, or  
+*  Open a new local terminal and run `make shell` to open a shell in the container. Close this shell with `exit`.  
 
 ### Conda environments
 
@@ -65,13 +65,10 @@ This script will build an image based on `continuumio/miniconda3:latest` and ins
 * nb_conda_kernels  
 * nbstripout
 * nodejs
-* matplotlib
-* pandas  
-* numpy  
 
 To add to this base configuration, edit `./etc/environment.yml` and new builds will use these specifications.
 
-If multiple project directories with individual `environment.yml` files exist in `./projects` an environment for each project will be created on build.
+If multiple project directories with individual `environment.yml` files exist in `./projects` an environment for each project will be created on build. Each environment will be automatically installed into Jupyter lab.
 
 #### Creating an environment file  
 

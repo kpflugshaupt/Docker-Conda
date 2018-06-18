@@ -8,9 +8,6 @@ RUN conda install -c conda-forge -y \
     nbstripout \
     nodejs \
     ipykernel \
-    matplotlib \
-    pandas \
-    numpy \
     nb_conda \
     nb_conda_kernels 
     
@@ -34,14 +31,14 @@ ENV PROJECT_DIR=/opt/projects \
     SHELL=/bin/bash \
     JUPYTERLAB_SETTINGS_DIR=/opt/user-settings
 
-# Copy in the startup script
-WORKDIR /
-ADD ./etc/docker_cmd.sh /
-ADD ./etc/environment.yml /tmp
-# Execute dos to linux in case the script was molested by windows
-RUN sed -i -e 's/\r$//' /docker_cmd.sh
-RUN /bin/bash -c "chmod +x /docker_cmd.sh"
+# Add build scripts and execute dos to linux in case the script was molested by windows
+RUN /bin/bash -c "mkdir /opt/etc"
+ADD etc/docker_cmd.sh /opt/etc/docker_cmd.sh
+RUN sed -i -e 's/\r$//' /opt/etc/docker_cmd.sh
+RUN /bin/bash -c "chmod +x /opt/etc/docker_cmd.sh"
+ADD etc/base-environment.yml /opt/etc/base-environment.yml
+RUN sed -i -e 's/\r$//' /opt/etc/base-environment.yml
 
 # Launch Jupyter lab
 WORKDIR ${PROJECT_DIR}
-CMD  /docker_cmd.sh
+CMD  /opt/etc/docker_cmd.sh
