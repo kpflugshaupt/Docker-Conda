@@ -2,6 +2,8 @@
 FROM continuumio/miniconda3:latest
 
 # Install packages
+RUN apt-get update && apt-get install -y dos2unix
+
 # Python packages from conda
 RUN conda install -c conda-forge -y \
     jupyterlab \
@@ -35,10 +37,10 @@ ENV PROJECT_DIR=/opt/projects \
 WORKDIR ${PROJECT_DIR}
 RUN /bin/bash -c "mkdir /opt/etc"
 ADD etc/docker_cmd.sh /opt/etc/docker_cmd.sh
-RUN sed -i -e 's/\r$//' /opt/etc/docker_cmd.sh
+RUN dos2unix /opt/etc/docker_cmd.sh
 RUN /bin/bash -c "chmod +x /opt/etc/docker_cmd.sh"
 ADD etc/base-environment.yml /opt/etc/base-environment.yml
-RUN sed -i -e 's/\r$//' /opt/etc/base-environment.yml
+RUN dos2unix /opt/etc/base-environment.yml
 
 # Launch Jupyter lab
 WORKDIR ${PROJECT_DIR}
