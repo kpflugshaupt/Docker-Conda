@@ -32,6 +32,7 @@ ENV PROJECT_DIR=/opt/projects \
     JUPYTERLAB_SETTINGS_DIR=/opt/user-settings
 
 # Add build scripts and execute dos to linux in case the script was molested by windows
+WORKDIR ${PROJECT_DIR}
 RUN /bin/bash -c "mkdir /opt/etc"
 ADD etc/docker_cmd.sh /opt/etc/docker_cmd.sh
 RUN sed -i -e 's/\r$//' /opt/etc/docker_cmd.sh
@@ -41,4 +42,4 @@ RUN sed -i -e 's/\r$//' /opt/etc/base-environment.yml
 
 # Launch Jupyter lab
 WORKDIR ${PROJECT_DIR}
-CMD  /opt/etc/docker_cmd.sh
+CMD ["/bin/bash", "/opt/etc/docker_cmd.sh"]

@@ -8,9 +8,9 @@ Clone projects to this directory.
 ## [Symlinks on Windows with Git Bash](https://www.joshkel.com/2018/01/18/symlinks-in-windows/)
 
 1. Grant permissions to user to [create symlinks](https://github.com/git-for-windows/git/wiki/Symbolic-Links#allowing-non-administrators-to-create-symbolic-links)  
+    1. Local Group Policy Editor: Launch gpedit.msc, navigate to Computer configuration - Windows Setting - Security Settings - Local Policies - User Rights Assignment and add the account(s) to the list named Create symbolic links.
 1. Add environemnt variable MSYS=winsymlinks:nativestrict  
-1. Set core.symlinks to true see [this link.](https://stackoverflow.com/questions/32847697/windows-specific-git-configuration-settings-where-are-they-set/32849199#32849199)  
-
+1. Set `git config core.symlinks true` see [this link.](https://stackoverflow.com/questions/32847697/windows-specific-git-configuration-settings-where-are-they-set/32849199#32849199)  
 
 ## Don't forget to create an environemnt file
 

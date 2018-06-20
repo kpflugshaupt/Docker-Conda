@@ -39,10 +39,10 @@ jupyter :
 	-p 8888:8888/tcp  pittvax/conda
 
 start :
-	docker start pv-conda
+	@docker start pv-conda
 
 stop :
-	docker stop pv-conda
+	@docker stop pv-conda
 
 prune :
 	@docker ps -a
