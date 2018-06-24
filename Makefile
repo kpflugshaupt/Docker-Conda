@@ -26,6 +26,7 @@ endif
 default: jupyter
 
 build :
+	-docker rm -f pv-conda
 	@echo "Building container..."
 	docker build --rm -t pittvax/conda . 
 	@$(MAKE) -f $(THIS_FILE) jupyter
