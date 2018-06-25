@@ -19,8 +19,8 @@ THIS_FILE := $(lastword $(MAKEFILE_LIST))
 ifneq ("$(wildcard $(HOME)/.jupyter/lab/user-settings)","")
 JUPYTER_SETTINGS := $(HOME)/.jupyter/lab/user-settings
 else 
-$(shell mkdir -p ${PWD}/user-settings)
-JUPYTER_SETTINGS := ${PWD}/user-settings
+$(shell mkdir -p $(HOME)/.docker_container/.jupyter/lab/user-settings)
+JUPYTER_SETTINGS := $(HOME)/.docker-container/.jupyter/lab/user-settings
 endif
 
 default: jupyter
@@ -36,6 +36,7 @@ jupyter :
 	--name pv-conda \
 	--mount type=bind,source=${PWD}/projects,target=/opt/projects \
 	--mount type=bind,source=$(JUPYTER_SETTINGS),target=/opt/user-settings \
+	--mount type=bind,source=$(HOME)/.docker-container,target=/root \
 	-p 8888:8888/tcp  pittvax/conda
 
 start :
