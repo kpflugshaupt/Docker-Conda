@@ -22,6 +22,13 @@ $(shell mkdir -p $(HOME)/.jupyter/lab/user-settings)
 endif
 JUPYTER_SETTINGS := $(HOME)/.jupyter/lab/user-settings
 
+# Find or create a home for sensitive environment variables
+ifneq ("$(wildcard $(HOME)/.credentials)","")
+else 
+$(shell mkdir -p $(HOME)/.credentials)
+endif
+CREDENTIALS := $(HOME)/.credentials
+
 default: jupyter
 
 build :
@@ -35,6 +42,7 @@ jupyter :
 	--name pv-conda \
 	--mount type=bind,source=${PWD}/projects,target=/opt/projects \
 	--mount type=bind,source=$(JUPYTER_SETTINGS),target=/opt/user-settings \
+	--mount type=bind,source=$(CREDENTIALS),target=/opt/credentials \
 	-p 8888:8888/tcp  pittvax/conda
 
 start :
