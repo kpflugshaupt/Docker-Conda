@@ -28,19 +28,16 @@ JUPYTER_SETTINGS := $(JUPYTER_DIR)
 # Check my secret place
 CREDS=$(HOME)/.bash/.credentials
 ifneq ("$(wildcard $(CREDS))","")
-$(info $(CREDS) exists)
 CREDENTIALS := $(CREDS)
 else
 # Check a normal place
 CREDS=$(HOME)/.credentials
 ifneq ("$(wildcard $(CREDS))","")
-$(info $(CREDS) exists)
 CREDENTIALS := $(CREDS)
 else
 $(info $(shell "mkdir" $(CREDS)))
 endif
 endif
-
 
 default: jupyter
 
