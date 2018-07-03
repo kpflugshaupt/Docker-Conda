@@ -23,6 +23,7 @@ EXPOSE 8888
 # Create a home for the mounted volume for Jupyter
 RUN /bin/bash -c "mkdir /opt/projects"
 RUN /bin/bash -c "mkdir /opt/user-settings"
+RUN /bin/bash -c "mkdir /opt/credentials"
 
 ENV PROJECT_DIR=/opt/projects \
     NOTEBOOK_PORT=8888 \

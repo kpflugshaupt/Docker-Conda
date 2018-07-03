@@ -10,31 +10,44 @@ HOME := $(subst \,/,$(HOME))
 endif
 
 # Get the root dir of this file
-ROOT_DIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+ROOT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
 # Define the full path to this file
 THIS_FILE := $(lastword $(MAKEFILE_LIST))
 
 # Find or create a home for jupyter custom settings
-ifneq ("$(wildcard $(HOME)/.jupyter/lab/user-settings)","")
+JUPYTER_DIR=$(HOME)/.jupyter/lab/user-settings
+ifneq ("$(wildcard $(JUPYTER_DIR))","")
+$(info $(JUPYTER_DIR) exists)
 else 
-$(shell mkdir -p $(HOME)/.jupyter/lab/user-settings)
+$(info $(shell "mkdir" $(JUPYTER_DIR)))
 endif
-JUPYTER_SETTINGS := $(HOME)/.jupyter/lab/user-settings
+JUPYTER_SETTINGS := $(JUPYTER_DIR)
 
 # Find or create a home for sensitive environment variables
-ifneq ("$(wildcard $(HOME)/.credentials)","")
-else 
-$(shell mkdir -p $(HOME)/.credentials)
+# Check my secret place
+CREDS=$(HOME)/.bash/.credentials
+ifneq ("$(wildcard $(CREDS))","")
+$(info $(CREDS) exists)
+CREDENTIALS := $(CREDS)
+else
+# Check a normal place
+CREDS=$(HOME)/.credentials
+ifneq ("$(wildcard $(CREDS))","")
+$(info $(CREDS) exists)
+CREDENTIALS := $(CREDS)
+else
+$(info $(shell "mkdir" $(CREDS)))
 endif
-CREDENTIALS := $(HOME)/.credentials
+endif
+
 
 default: jupyter
 
 build :
 	-docker rm -f pv-conda
 	@echo "Building container..."
-	docker build --rm -t pittvax/conda . 
+	docker build --rm -t pittvax/conda .
 	@$(MAKE) -f $(THIS_FILE) jupyter
 
 jupyter :
@@ -61,4 +74,5 @@ prune :
 	@docker image prune -f
 
 shell :
+	-@$(MAKE) -f $(THIS_FILE) start
 	docker exec -i -t pv-conda /bin/bash

@@ -39,7 +39,7 @@ if [ ! -f /var/tmp/pv-conda_init ] ; then
     for file in $(find /opt/projects -name 'environment.yml'); do
     eval $(dos2unix $file)
     eval $(parse_yaml $file)
-    conda env create -f $file -n $name
+    conda env create --file $file -n $name
     # install environment kernel in jupyter
     source activate $name
     conda install -c conda-forge -y ipykernel
