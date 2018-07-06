@@ -18,7 +18,6 @@ THIS_FILE := $(lastword $(MAKEFILE_LIST))
 # Find or create a home for jupyter custom settings
 JUPYTER_DIR=$(HOME)/.jupyter/lab/user-settings
 ifneq ("$(wildcard $(JUPYTER_DIR))","")
-$(info $(JUPYTER_DIR) exists)
 else 
 $(info $(shell "mkdir" $(JUPYTER_DIR)))
 endif
