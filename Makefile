@@ -44,6 +44,7 @@ jupyter :
 	--mount type=bind,source=${PWD}/projects,target=/opt/projects \
 	--mount type=bind,source=$(JUPYTER_SETTINGS),target=/opt/user-settings \
 	--mount type=bind,source=$(CREDENTIALS),target=/opt/credentials \
+	--mount source=environment_vol,target=/opt/conda/envs \
 	-p 8888:8888/tcp  pittvax/conda
 
 start :
