@@ -31,9 +31,9 @@ if [ ! -f /var/tmp/pv-conda_init ] ; then
     echo "c.NotebookApp.password = ${PW_HASH}" >> ${CONFIG_PATH}
 
     # Update base environment with defaults
-    if [ -f '/opt/base-environment.yml' ]; then 
-        conda env update -f /tmp/environment.yml
-        conda update -n base conda
+    if [ -f '/opt/etc/base-environment.yml' ]; then 
+        conda env update -q -f /opt/etc/base-environment.yml
+        conda update -n base conda -q
     fi
 
     # create environemts for projects
