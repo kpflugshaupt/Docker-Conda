@@ -36,12 +36,10 @@ ENV PROJECT_DIR=/opt/projects \
 
 # Add build scripts and execute dos to linux in case the script was molested by windows
 WORKDIR ${PROJECT_DIR}
-RUN /bin/bash -c "mkdir /opt/etc"
-ADD etc/docker_cmd.sh /opt/etc/docker_cmd.sh
-RUN dos2unix /opt/etc/docker_cmd.sh
+ADD etc/ /opt/etc/
+WORKDIR /opt/etc/
+RUN /bin/bash -c "find . -type f -print0 | xargs -0 dos2unix"
 RUN /bin/bash -c "chmod +x /opt/etc/docker_cmd.sh"
-ADD etc/base-environment.yml /opt/etc/base-environment.yml
-RUN dos2unix /opt/etc/base-environment.yml
 
 # Launch Jupyter lab
 WORKDIR ${PROJECT_DIR}
