@@ -1,4 +1,3 @@
-.PHONY: test build jupyter start stop destroy prune shell
 # Set shell to cmd on windows
 ifneq (,$(findstring WINDOWS,$(PATH)))
 SHELL := C:/Windows/System32/cmd.exe
@@ -24,18 +23,11 @@ endif
 JUPYTER_SETTINGS := $(JUPYTER_DIR)
 
 # Find or create a home for sensitive environment variables
-# Check my secret place
-CREDS=$(HOME)/.bash/.credentials
-ifneq ("$(wildcard $(CREDS))","")
-CREDENTIALS := $(CREDS)
-else
-# Check a normal place
 CREDS=$(HOME)/.credentials
 ifneq ("$(wildcard $(CREDS))","")
 CREDENTIALS := $(CREDS)
 else
 $(info $(shell "mkdir" $(CREDS)))
-endif
 endif
 
 default: jupyter
