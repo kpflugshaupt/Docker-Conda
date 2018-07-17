@@ -16,7 +16,7 @@ RUN conda install -c conda-forge -y \
 # Conda supports delegating to pip to install dependencies
 # that aren’t available in anaconda or need to be compiled
 # for other reasons. 
-# RUN pip install -y \
+# RUN pip install -q \
 
 # Set up environment
 EXPOSE 8888

@@ -33,7 +33,7 @@ if [ ! -f /var/tmp/pv-conda_init ] ; then
     # Update base environment with defaults
     if [ -f '/opt/etc/base-environment.yml' ]; then 
         conda env update -q -f /opt/etc/base-environment.yml
-        conda update -n base conda -q
+        conda update -n -q base conda
     fi
 
     # create environemts for projects
