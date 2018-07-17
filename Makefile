@@ -30,22 +30,25 @@ else
 $(info $(shell "mkdir" $(CREDS)))
 endif
 
-default: jupyter
+default: up
 
 build :
 	-docker rm -f pv-conda
 	@echo "Building container..."
 	docker build --rm -t pittvax/conda .
-	@$(MAKE) -f $(THIS_FILE) jupyter
+	@$(MAKE) -f $(THIS_FILE) up
 
-jupyter :
-	docker run -it \
+up :
+	@echo "Creating conda environment. This may take a few minutes..."
+	@docker run -it \
 	--name pv-conda \
 	--mount type=bind,source=${PWD}/projects,target=/opt/projects \
 	--mount type=bind,source=$(JUPYTER_SETTINGS),target=/opt/user-settings \
 	--mount type=bind,source=$(CREDENTIALS),target=/opt/credentials \
-	--mount source=environment_vol,target=/opt/conda/envs \
+	--mount type=volume,source=envs_vol,target=/opt/conda/envs \
 	-p 8888:8888/tcp  pittvax/conda
+	@echo "Environment created. Jupyter Lab is available at https://localhost:8888"
+
 
 start :
 	@docker start pv-conda

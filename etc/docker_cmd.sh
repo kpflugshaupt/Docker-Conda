@@ -33,11 +33,11 @@ if [ ! -f /var/tmp/pv-conda_init ] ; then
     # Update base environment with defaults
     if [ -f '/opt/etc/base-environment.yml' ]; then 
         conda env update -q -f /opt/etc/base-environment.yml
-        conda update -n -q base conda
+        conda update -q -y -n base conda
     fi
 
     # create environemts for projects
-    for file in $(find /opt/projects -name 'environment.yml'); do
+    for file in $(find /opt/projects -name environment.yml); do
     source activate base
     eval $(dos2unix $file)
     eval $(parse_yaml $file)
