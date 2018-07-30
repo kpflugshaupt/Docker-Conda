@@ -39,8 +39,9 @@ build :
 	@$(MAKE) -f $(THIS_FILE) up
 
 up :
+	-@stop
 	@echo "Creating conda environment. This may take a few minutes..."
-	@docker run -it \
+	@docker run --rm -it \
 	--name pv-conda \
 	--mount type=bind,source=${PWD}/projects,target=/opt/projects \
 	--mount type=bind,source=$(JUPYTER_SETTINGS),target=/opt/user-settings \

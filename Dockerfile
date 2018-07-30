@@ -2,7 +2,7 @@
 FROM continuumio/miniconda3:latest
 
 # Install packages
-RUN apt-get update && apt-get install -y dos2unix
+RUN apt-get update && apt-get install -y dos2unix gcc
 
 # Python packages from conda
 RUN conda install -c conda-forge -y \
@@ -11,7 +11,7 @@ RUN conda install -c conda-forge -y \
     nodejs \
     ipykernel \
     nb_conda \
-    nb_conda_kernels 
+    nb_conda_kernels
     
 # Conda supports delegating to pip to install dependencies
 # that aren’t available in anaconda or need to be compiled
