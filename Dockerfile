@@ -11,7 +11,14 @@ RUN conda install -c conda-forge -y \
     nodejs \
     ipykernel \
     nb_conda \
-    nb_conda_kernels
+    nb_conda_kernels \
+    # Update base environment with defaults
+    && if [ -f '/opt/etc/base-environment.yml' ]; then \
+            conda env update -q --yes -f /opt/etc/base-environment.yml \
+        else \
+            conda update -q --yes -n base conda \
+        fi 
+    
     
 # Conda supports delegating to pip to install dependencies
 # that aren’t available in anaconda or need to be compiled

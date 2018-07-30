@@ -20,7 +20,6 @@ function parse_yaml {
    }'
 }
 
-
 if [ ! -f /var/tmp/pv-conda_init ] ; then
     jupyter notebook --allow-root --generate-config
     if [ ! -f ${SSL_CERT_PEM} ] ; then
@@ -30,22 +29,16 @@ if [ ! -f /var/tmp/pv-conda_init ] ; then
     fi
     echo "c.NotebookApp.password = ${PW_HASH}" >> ${CONFIG_PATH}
 
-    # Update base environment with defaults
-    if [ -f '/opt/etc/base-environment.yml' ]; then 
-        conda env update -q -f /opt/etc/base-environment.yml
-        conda update -q -y -n base conda
-    fi
-
     # create environemts for projects
     for file in $(find /opt/projects -name environment.yml); do
     source activate base
     eval $(dos2unix $file)
     eval $(parse_yaml $file)
-    conda env create --file $file -n $name
+    conda env create --yes --file $file -n $name
     # install environment kernel in jupyter
     source activate $name
-    conda install -c conda-forge -y ipykernel
-    ipython kernel install --name=$name
+    conda install -c conda-forge --yes ipykernel
+    ipython kernel install --yes --name=$name
     done
 
     # record the first run

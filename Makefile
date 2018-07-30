@@ -33,13 +33,14 @@ endif
 default: up
 
 build :
-	-docker rm -f pv-conda
+	docker rm -f pv-conda ||:
 	@echo "Building container..."
-	docker build --rm -t pittvax/conda .
+	docker build --rm -t pittvax/conda . ||:
 	@$(MAKE) -f $(THIS_FILE) up
 
-up :
-	-@stop
+up : 
+	@$(MAKE) -f $(THIS_FILE) stop ||:
+	@docker rm -f pv-conda ||:
 	@echo "Creating conda environment. This may take a few minutes..."
 	@docker run --rm -it \
 	--name pv-conda \
