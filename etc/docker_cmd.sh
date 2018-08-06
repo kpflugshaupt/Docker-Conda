@@ -29,16 +29,23 @@ if [ ! -f /var/tmp/pv-conda_init ] ; then
     fi
     echo "c.NotebookApp.password = ${PW_HASH}" >> ${CONFIG_PATH}
 
+    # Update base environment with defaults
+    if [ -f '/opt/etc/base-environment.yml' ]; then
+        conda env update -q -f /opt/etc/base-environment.yml
+    else
+        conda update -q -n base conda
+    fi
+
     # create environemts for projects
-    for file in $(find /opt/projects -name environment.yml); do
-    source activate base
+    for file in $(find /root/projects -name environment.yml); do
     eval $(dos2unix $file)
     eval $(parse_yaml $file)
-    conda env create --yes --file $file -n $name
+    source activate base
+    conda env create --file $file -n $name
     # install environment kernel in jupyter
     source activate $name
-    conda install -c conda-forge --yes ipykernel
-    ipython kernel install --yes --name=$name
+    conda install -c conda-forge ipykernel
+    ipython kernel install --name=$name
     done
 
     # record the first run
