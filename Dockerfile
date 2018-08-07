@@ -2,24 +2,27 @@
 FROM continuumio/miniconda3:latest
 
 # Install packages
-RUN apt-get update && apt-get install -y dos2unix gcc
-
-# Python packages from conda
-RUN conda install -c conda-forge -y \
+RUN apt-get update && apt-get install -y dos2unix gcc \
+    # Python packages from conda
+    && conda install -c conda-forge -y \
     jupyterlab \
     nbstripout \
     nodejs \
     ipykernel \
     nb_conda \
-    nb_conda_kernels
+    nb_conda_kernels \
+    # Create a home for the mounted volumes
+    && mkdir /opt/projects \
+    && mkdir /opt/user-settings \
+    && mkdir /opt/credentials
 
-# Set up environment
-EXPOSE 8888
-# Create a home for the mounted volume for Jupyter
-RUN /bin/bash -c "mkdir /opt/projects"
-RUN /bin/bash -c "mkdir /opt/user-settings"
-RUN /bin/bash -c "mkdir /opt/credentials"
 
+
+# RUN /bin/bash -c ""
+# RUN /bin/bash -c ""
+# RUN /bin/bash -c ""
+
+# Define environment variables in the container
 ENV PROJECT_DIR=/root/projects \
     NOTEBOOK_PORT=8888 \
     SSL_CERT_PEM=/root/.jupyter/jupyter.pem \
@@ -36,6 +39,11 @@ WORKDIR /opt/etc/
 RUN /bin/bash -c "find . -type f -print0 | xargs -0 dos2unix"
 RUN /bin/bash -c "chmod +x /opt/etc/docker_cmd.sh"
 
+# Expose port 8888 to host
+EXPOSE 8888
+
 # Launch Jupyter lab
 WORKDIR ${PROJECT_DIR}
+
+# Run additional installation steps in the container
 CMD ["/bin/bash", "/opt/etc/docker_cmd.sh"]

@@ -2,7 +2,7 @@
 
 Clone projects to this directory.  
 
-* All projects will be mounted in the container.
+* All projects will be mounted in the container when the conatainer is created using `make up`
 * A conda environment will be created for each project with `environment.yml` in the root of the project
 
 ## [Symlinks on Windows with Git Bash](https://www.joshkel.com/2018/01/18/symlinks-in-windows/)
@@ -14,7 +14,7 @@ Clone projects to this directory.
 
 ## Don't forget to create an environemnt file
 
-Creating an environment file allows one to rebuild the container and install packages automatically.  
+Creating an [environment file](https://conda.io/docs/commands/env/conda-env-create.html) allows one to rebuild the container and install packages automatically.  
 From a shell in the container or from the Jupyter lab terminal, run  
 
 ```bash  
@@ -24,3 +24,5 @@ source activate <myenvironment>
 # Substitute your project's directory for <myproject>
 conda env export > /opt/projects/<myproject>/>environment.yml  
 ```
+
+Note that conda has some bugs when re-creating environments. See this issue. A workaround is to manually remove version numbers from problematic dependencies in the auto-created `environment.yml`.
