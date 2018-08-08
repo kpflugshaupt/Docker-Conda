@@ -1,7 +1,4 @@
 # !/bin/bash
-#
-# generate configuration, cert, and password if this is the first run
-#
 
 function parse_yaml {
    local prefix=$2
@@ -20,6 +17,7 @@ function parse_yaml {
    }'
 }
 
+# generate configuration, cert, and password if this is the first run
 if [ ! -f /var/tmp/pv-conda_init ] ; then
     jupyter notebook --allow-root --generate-config
     if [ ! -f ${SSL_CERT_PEM} ] ; then

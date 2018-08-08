@@ -101,6 +101,9 @@ APP_IMAGE=pittvax/pv-conda
 # container name to use for app
 APP_NAME=pv-conda
 
+# named volume used by app
+NAMED_VOL=envs_vol
+
 # Docker command to launch the app.
 # leave blank if using docker-compose.yml
 app_up : 
@@ -110,10 +113,12 @@ app_up :
 	--mount type=bind,source=${PWD}/projects,target=/root/projects \
 	--mount type=bind,source=$(SETTINGS),target=/root/user-settings \
 	--mount type=bind,source=$(CREDENTIALS),target=/root/credentials \
-	--mount type=volume,source=envs_vol,target=/opt/conda/envs \
+	--mount type=volume,source=$(NAMED_VOL),target=/opt/conda/envs \
 	-p 8888:8888/tcp  $(APP_IMAGE)
 	echo "Environment created. Jupyter Lab is available at https://localhost:8888"
 
+rm_app_vols:
+	docker volume rm -f $(NAMED_VOL) 
 #############################
 # Docker commands
 #############################
@@ -122,13 +127,12 @@ app_up :
 build:
 	echo "Building image..."
 	docker build -t $(APP_IMAGE) . $(ARGS)
-	# @$(MAKE) -f $(THIS_FILE) up
 
 # build app as defined in docker-compose.yml or app_up target
 up:
 	-$(MAKE) -f $(THIS_FILE) stop
 	-docker rm -f $(APP_NAME) 2> /dev/null
-	docker-compose up -d 2> /dev/null || $(MAKE) -f $(THIS_FILE) app_up
+	docker-compose up -d 2> /dev/null || $(MAKE) -f $(THIS_FILE) build && $(MAKE) -f $(THIS_FILE) app_up
 	
 # stop app without losing data  
 stop:
@@ -146,15 +150,11 @@ rebuild:
 
 # stop and delete all Docker objects defined in docker-compose.yml  
 # ALL DATA WILL BE DELETED 
-# destroy:
-# 	-docker-compose down --rmi all -v --remove-orphans 2> /dev/null
-# 	-docker-compose rm -f -s -v 2> /dev/null
-# 	docker volume prune --force
-# 	docker system prune --force
-
-# destroy : 
-# 	-docker rmi -f pittvax/conda
-# 	@$(MAKE) -f $(THIS_FILE) prune
+destroy:
+	-docker-compose down --rmi all -v --remove-orphans 2> /dev/null || $(MAKE) -f $(THIS_FILE) stop && docker rm $(APP_NAME)
+	-docker rmi -f $(APP_IMAGE)
+	-$(MAKE) -f $(THIS_FILE) rm_app_vols
+	$(MAKE) -f $(THIS_FILE) prune
 
 # show status of Docker objects defined in docker-compose.yml  
 state:
@@ -168,10 +168,10 @@ state:
 	@echo ***Networks***
 	docker network ls 
 
+# Prune unused volumes and images
 prune :
-	-docker container rm -f pv-conda
-	@docker volume prune -f
-	@docker image prune -f
+	docker volume prune -f
+	docker image prune -f
 
 # show Docker logs  
 logs:
