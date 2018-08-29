@@ -40,6 +40,7 @@ if [ ! -f /var/tmp/pv-conda_init ] ; then
     eval $(parse_yaml $file)
     source activate base
     conda env create --file $file -n $name
+    conda env update --file $file -n $name
     # install environment kernel in jupyter
     source activate $name
     conda install -c conda-forge ipykernel

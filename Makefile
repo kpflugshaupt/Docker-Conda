@@ -118,7 +118,8 @@ app_up :
 	echo "Environment created. Jupyter Lab is available at https://localhost:8888"
 
 rm_app_vols:
-	docker volume rm -f $(NAMED_VOL) 
+	docker volume rm -f $(NAMED_VOL)
+
 #############################
 # Docker commands
 #############################
@@ -175,7 +176,7 @@ prune :
 
 # show Docker logs  
 logs:
-	$(DOCKER_CMD) logs $(ARGS)
+	docker logs $(ARGS)
 
 # open a shell in the application container
 shell :
