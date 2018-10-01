@@ -27,6 +27,17 @@ if [ ! -f /var/tmp/pv-conda_init ] ; then
     fi
     echo "c.NotebookApp.password = ${PW_HASH}" >> ${CONFIG_PATH}
 
+    # add notebook output strip filter
+    echo \
+    "import os
+    from subprocess import check_call
+    def post_save(model, os_path, contents_manager):
+        if model['type'] != 'notebook':
+            return # only do this for notebooks
+        d, fname = os.path.split(os_path)
+        check_call(['ipython', 'nbconvert', '--to', 'script', fname], cwd=d)
+    c.FileContentsManager.post_save_hook = post_save" >> $CONFIG_PATH
+
     # Update base environment with defaults
     if [ -f '/opt/etc/base-environment.yml' ]; then
         conda env update -q -f /opt/etc/base-environment.yml
