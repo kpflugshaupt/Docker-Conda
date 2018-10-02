@@ -16,11 +16,11 @@ ADD etc/ /opt/etc/
 WORKDIR /opt/etc/
 
 # Install packages
-RUN apt-get update && apt-get install -y dos2unix gcc nano\
+RUN apt-get update && apt-get install -y apt-utils dos2unix gcc nano\
     # Python packages from conda
     && conda install -c conda-forge -y \
     jupyterlab \
-    nbstripout \
+    # nbstripout \
     nodejs \
     ipykernel \
     nb_conda \
